@@ -15,7 +15,7 @@ function Login({ closeModal, onRegisterClick }) {
         if (!checarInputs()) return
 
         try {
-            const response = await axios.get("${API_URL}/usuario/" + usuario)
+            const response = await axios.get(`${API_URL}/usuario/${usuario}`)
             if (response.data.dados.password === senha) {
                 setUserType(response.data.dados)
                 window.history.pushState({}, '', '/')

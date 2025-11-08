@@ -25,7 +25,7 @@ function Perfil() {
         setProfilePicture(base64String)
 
         try {
-          const response = await axios.post('${API_URL}/uploadperfilimage', {
+          const response = await axios.post(`${API_URL}/uploadperfilimage`, {
             username: username,
             base64String: base64String,
           })

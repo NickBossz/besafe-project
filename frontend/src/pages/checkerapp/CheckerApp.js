@@ -32,7 +32,7 @@ const CheckerApp = () => {
         setResult(null);
 
         try {
-            const response = await axios.post('${API_URL}/check-site', {
+            const response = await axios.post(`${API_URL}/check-site`, {
                 url: url.trim()
             });
 
@@ -91,7 +91,7 @@ const CheckerApp = () => {
             const formData = new FormData();
             formData.append('file', selectedFile);
 
-            const response = await axios.post('${API_URL}/check-file', formData, {
+            const response = await axios.post(`${API_URL}/check-file`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
