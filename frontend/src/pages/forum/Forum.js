@@ -5,6 +5,7 @@ import { useUserType } from '../../UserTypeContext.js';
 import { useNotifications } from '../NotificationManager.js';
 import { Buffer } from 'buffer';
 import { Search, Filter, SortAsc, SortDesc, Plus, ThumbsUp, ThumbsDown, Edit, Trash, Shield, AlertTriangle, XCircle } from 'lucide-react';
+import API_URL from '../../config/api';
 
 export default function Forum() {
   const { userType } = useUserType();
@@ -61,7 +62,7 @@ export default function Forum() {
 
   const fetchPosts = useCallback(async (filter = '') => {
     try {
-      const res = await axios.get('http://localhost:8080/posts', {
+      const res = await axios.get(`${API_URL}/posts`, {
         params: { site: filter }
       });
       setPosts(res.data);
@@ -72,7 +73,7 @@ export default function Forum() {
       await Promise.all(
         uniqueAuthors.map(async (username) => {
           try {
-            const response = await axios.get(`http://localhost:8080/usuario/${username}`);
+            const response = await axios.get(`${API_URL}/usuario/${username}`);
             const { header_image, bytes_image } = response.data.dados;
             const imgSrc = montarImagem(header_image, bytes_image);
             if (imgSrc) photos[username] = imgSrc;
@@ -197,10 +198,10 @@ export default function Forum() {
 
     try {
       if (editingPost) {
-        await axios.put(`http://localhost:8080/posts/${editingPost.id}`, payload);
+        await axios.put(`${API_URL}/posts/${editingPost.id}`, payload);
         addNotification('Publicação atualizada com sucesso!', 'success');
       } else {
-        await axios.post('http://localhost:8080/posts', payload);
+        await axios.post(`${API_URL}/posts`, payload);
         addNotification('Publicação criada com sucesso!', 'success');
       }
       fetchPosts(search);
@@ -218,7 +219,7 @@ export default function Forum() {
     }
     if (!window.confirm('Confirma exclusão da publicação?')) return;
     try {
-      await axios.delete(`http://localhost:8080/posts/${id}`, { data: { authorUsername: userType.username } });
+      await axios.delete(`${API_URL}/posts/${id}`, { data: { authorUsername: userType.username } });
       addNotification('Publicação excluída com sucesso!', 'success');
       fetchPosts(search);
     } catch (err) {
@@ -233,7 +234,7 @@ export default function Forum() {
       return;
     }
     try {
-      await axios.post(`http://localhost:8080/posts/${id}/vote`, {
+      await axios.post(`${API_URL}/posts/${id}/vote`, {
         authorUsername: userType.username,
         type: tipo,
       });

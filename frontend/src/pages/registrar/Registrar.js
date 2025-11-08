@@ -3,6 +3,7 @@ import styles from '../Auth.module.css'
 import axios from 'axios'
 import { useUserType } from '../../UserTypeContext.js'
 import { useNotifications } from '../NotificationManager.js'
+import API_URL from '../../config/api'
 
 function Registrar({ closeModal, onLoginClick }) {
     const [usuario, setUsuario] = useState('')
@@ -23,7 +24,7 @@ function Registrar({ closeModal, onLoginClick }) {
             }
 
 
-            const response = await axios.post("http://localhost:8080/criarUsuario", dados)
+            const response = await axios.post("${API_URL}/criarUsuario", dados)
             console.log(response.data.mensagem)
             
             handleLogin()
@@ -46,7 +47,7 @@ function Registrar({ closeModal, onLoginClick }) {
 
     async function handleLogin() {
         try {
-            const response = await axios.get("http://localhost:8080/usuario/" + usuario)
+            const response = await axios.get("${API_URL}/usuario/" + usuario)
             
             if (response.data.dados && response.data.dados.password === senha) {
                 setUserType(response.data.dados)

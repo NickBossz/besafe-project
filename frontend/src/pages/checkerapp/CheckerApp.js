@@ -4,6 +4,7 @@ import { Search, Shield, AlertTriangle, CheckCircle, XCircle, Loader2, Copy, Ext
 import { useNotifications } from '../NotificationManager.js';
 import axios from 'axios';
 import styles from './CheckerApp.module.css';
+import API_URL from '../../config/api';
 
 const CheckerApp = () => {
     const [activeTab, setActiveTab] = useState('url');
@@ -31,7 +32,7 @@ const CheckerApp = () => {
         setResult(null);
 
         try {
-            const response = await axios.post('http://localhost:8080/check-site', {
+            const response = await axios.post('${API_URL}/check-site', {
                 url: url.trim()
             });
 
@@ -90,7 +91,7 @@ const CheckerApp = () => {
             const formData = new FormData();
             formData.append('file', selectedFile);
 
-            const response = await axios.post('http://localhost:8080/check-file', formData, {
+            const response = await axios.post('${API_URL}/check-file', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
