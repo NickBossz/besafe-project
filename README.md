@@ -204,39 +204,19 @@ be-safe-monorepo/
 
 ## 🌐 Deployment on Vercel
 
+For detailed deployment instructions, see **[VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md)**.
+
 ### Quick Deploy
 
-1. **Set up Supabase** (if not done already):
-   - Follow [SUPABASE_SETUP.md](./SUPABASE_SETUP.md)
-   - Make sure your database schema is created
-
-2. **Push your code to GitHub**
-
-3. **Import the project on Vercel**:
-   - Vercel will automatically detect the monorepo structure
-
-4. **Add environment variables** in Vercel dashboard:
-
-   **For Backend:**
-   - `VIRUSTOTAL_API_KEY` = `ce7de855a44cd3422f5dc0a490744cb0a9869b83ba30963ee3e4e62158b5306a`
-   - `SUPABASE_URL` = Your Supabase project URL
-   - `SUPABASE_SERVICE_KEY` = Your Supabase service role key
-
-   **For Frontend:**
-   - `VIRUSTOTAL_API_KEY` = `ce7de855a44cd3422f5dc0a490744cb0a9869b83ba30963ee3e4e62158b5306a`
-
+1. **Set up Supabase**: Follow [SUPABASE_SETUP.md](./SUPABASE_SETUP.md)
+2. **Push to GitHub**: `git push origin main`
+3. **Import on Vercel**: Go to [vercel.com/new](https://vercel.com/new)
+4. **Add environment variables**:
+   - Backend: `VIRUSTOTAL_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`
+   - Frontend: `VIRUSTOTAL_API_KEY`
 5. **Deploy!**
 
-### Manual Configuration
-
-If needed, ensure `vercel.json` is properly configured (already included).
-
-### Important Notes for Production
-
-- Make sure your Supabase project is active and not paused
-- Enable Row Level Security (RLS) policies in production
-- Consider implementing password hashing (bcrypt) before deployment
-- Set up proper CORS origins instead of allowing all (`*`)
+See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for troubleshooting, monitoring, and advanced configuration.
 
 ## 🤝 Contributing
 
