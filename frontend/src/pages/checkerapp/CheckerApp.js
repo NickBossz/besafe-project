@@ -31,51 +31,11 @@ const CheckerApp = () => {
         setIsLoading(true);
         setResult(null);
 
-        try {
-            const response = await axios.post(`${API_URL}/check-site`, {
-                url: url.trim()
-            });
-
-            const data = response.data;
-            
-            // Calcula o score baseado no risco previsto
-            const score = Math.max(0, 100 - data.risco_previsto);
-            const isSecure = score >= 70;
-            
-            // Gera ameaças baseadas nos dados
-            const threats = [];
-            if (data.malicious > 0) threats.push(`${data.malicious} detecções maliciosas`);
-            if (data.suspicious > 0) threats.push(`${data.suspicious} detecções suspeitas`);
-            if (data.redirecionamentos > 5) threats.push(`${data.redirecionamentos} redirecionamentos (suspeito)`);
-            if (data.idade_dias < 30) threats.push('Domínio muito recente (suspeito)');
-
-            setResult({
-                url: url,
-                isSecure,
-                score: Math.round(score),
-                threats,
-                timestamp: new Date().toLocaleString(),
-                details: {
-                    malicious: data.malicious,
-                    suspicious: data.suspicious,
-                    harmless: data.harmless,
-                    undetected: data.undetected,
-                    age: data.idade_dias,
-                    redirects: data.redirecionamentos,
-                    riskScore: data.risco_previsto
-                }
-            });
-
-            addNotification(
-                isSecure ? 'URL verificada com sucesso!' : 'Atenção: Ameaças detectadas!',
-                isSecure ? 'success' : 'error'
-            );
-        } catch (error) {
-            console.error('Erro ao verificar URL:', error);
-            addNotification('Erro ao verificar URL. Tente novamente.', 'error');
-        } finally {
+        // Simula verificação (versão demo - funcionalidade completa requer backend)
+        setTimeout(() => {
+            addNotification('Funcionalidade de verificação temporariamente indisponível. Use VirusTotal.com para verificar URLs.', 'error');
             setIsLoading(false);
-        }
+        }, 1000);
     }, [url, addNotification]);
 
     const checkFile = useCallback(async () => {
@@ -87,69 +47,11 @@ const CheckerApp = () => {
         setIsFileLoading(true);
         setFileResult(null);
 
-        try {
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-
-            const response = await axios.post(`${API_URL}/check-file`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                timeout: 120000 // 2 minutos
-            });
-
-            const data = response.data;
-            
-            // Sistema de score mais realista
-            let score, isSecure;
-            const detectionRate = data.positives / data.total;
-            
-            if (data.positives === 0) {
-                // Nenhuma detecção - arquivo seguro
-                score = 100;
-                isSecure = true;
-            } else if (data.positives === 1 && data.total >= 50) {
-                // Apenas 1 detecção em muitos scanners - provável falso positivo
-                score = 85;
-                isSecure = true;
-            } else if (data.positives === 1 && data.total < 50) {
-                // 1 detecção em poucos scanners - suspeito
-                score = 70;
-                isSecure = false;
-            } else if (detectionRate <= 0.05) {
-                // Menos de 5% de detecções - provavelmente seguro
-                score = Math.max(70, 100 - (detectionRate * 200));
-                isSecure = score >= 75;
-            } else if (detectionRate <= 0.15) {
-                // Entre 5% e 15% - suspeito
-                score = Math.max(40, 70 - (detectionRate * 200));
-                isSecure = false;
-            } else {
-                // Mais de 15% - claramente malicioso
-                score = Math.max(0, 40 - (detectionRate * 100));
-                isSecure = false;
-            }
-
-            setFileResult({
-                filename: data.filename,
-                isSecure,
-                score: Math.round(score),
-                positives: data.positives,
-                total: data.total,
-                permalink: data.permalink,
-                timestamp: new Date().toLocaleString()
-            });
-
-            addNotification(
-                isSecure ? 'Arquivo verificado com sucesso!' : 'Atenção: Ameaças detectadas no arquivo!',
-                isSecure ? 'success' : 'error'
-            );
-        } catch (error) {
-            console.error('Erro ao verificar arquivo:', error);
-            addNotification('Erro ao verificar arquivo. Tente novamente.', 'error');
-        } finally {
+        // Simula verificação (versão demo - funcionalidade completa requer backend)
+        setTimeout(() => {
+            addNotification('Funcionalidade de verificação temporariamente indisponível. Use VirusTotal.com para verificar arquivos.', 'error');
             setIsFileLoading(false);
-        }
+        }, 1000);
     }, [selectedFile, addNotification]);
 
     const handleFileChange = useCallback((e) => {
