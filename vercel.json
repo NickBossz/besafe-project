@@ -7,62 +7,12 @@
       "config": {
         "distDir": "build"
       }
-    },
-    {
-      "src": "backEnd/api/index.js",
-      "use": "@vercel/node"
     }
   ],
   "rewrites": [
     {
-      "source": "/check-site",
-      "destination": "/api/check-site"
-    },
-    {
-      "source": "/check-file",
-      "destination": "/api/check-file"
-    },
-    {
-      "source": "/criarUsuario",
-      "destination": "/api/criarUsuario"
-    },
-    {
-      "source": "/usuario/:username",
-      "destination": "/api/usuario/:username"
-    },
-    {
-      "source": "/usuarios",
-      "destination": "/api/usuarios"
-    },
-    {
-      "source": "/excluirUsuario/:username",
-      "destination": "/api/excluirUsuario/:username"
-    },
-    {
-      "source": "/uploadperfilimage",
-      "destination": "/api/uploadperfilimage"
-    },
-    {
-      "source": "/posts/:id/vote",
-      "destination": "/api/posts/:id/vote"
-    },
-    {
-      "source": "/posts/:id",
-      "destination": "/api/posts/:id"
-    },
-    {
-      "source": "/posts",
-      "destination": "/api/posts"
-    },
-    {
-      "source": "/forum/posts/:username",
-      "destination": "/api/forum/posts/:username"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "backEnd/api/index.js"
+      "source": "/(check-site|check-file|criarUsuario|usuario|usuarios|excluirUsuario|uploadperfilimage|posts|forum)/:path*",
+      "destination": "/api/:path*"
     }
   ]
 }
