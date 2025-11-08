@@ -96,24 +96,19 @@ Follow the detailed guide in [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) to:
 
 ### 4. Configure environment variables
 
-**Backend** (`.env` in `backend` folder):
+**Backend** (`backend/.env`):
 ```env
-# VirusTotal API
-VIRUSTOTAL_API_KEY=your_virustotal_api_key_here
-
-# Supabase
+VIRUSTOTAL_API_KEY=ce7de855a44cd3422f5dc0a490744cb0a9869b83ba30963ee3e4e62158b5306a
 SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_KEY=your_supabase_service_role_key_here
-
-# Server
-PORT=8080
+SUPABASE_SERVICE_KEY=your_supabase_service_role_key
 ```
 
-**Frontend** (`.env` in `frontend` folder):
+**Frontend** (`frontend/.env`):
 ```env
-VIRUSTOTAL_API_KEY=your_virustotal_api_key_here
-REACT_APP_API_URL=http://localhost:8080
+VIRUSTOTAL_API_KEY=ce7de855a44cd3422f5dc0a490744cb0a9869b83ba30963ee3e4e62158b5306a
 ```
+
+Replace the Supabase values with your actual credentials from Step 3.
 
 ### 5. Run the project
 
@@ -222,14 +217,13 @@ be-safe-monorepo/
 
 4. **Add environment variables** in Vercel dashboard:
 
-   **Backend Environment Variables:**
-   - `VIRUSTOTAL_API_KEY`: Your VirusTotal API key
-   - `SUPABASE_URL`: Your Supabase project URL
-   - `SUPABASE_SERVICE_KEY`: Your Supabase service role key
+   **For Backend:**
+   - `VIRUSTOTAL_API_KEY` = `ce7de855a44cd3422f5dc0a490744cb0a9869b83ba30963ee3e4e62158b5306a`
+   - `SUPABASE_URL` = Your Supabase project URL
+   - `SUPABASE_SERVICE_KEY` = Your Supabase service role key
 
-   **Frontend Environment Variables:**
-   - `VIRUSTOTAL_API_KEY`: Your VirusTotal API key
-   - `REACT_APP_API_URL`: Your backend API URL (e.g., `https://your-project.vercel.app/api`)
+   **For Frontend:**
+   - `VIRUSTOTAL_API_KEY` = `ce7de855a44cd3422f5dc0a490744cb0a9869b83ba30963ee3e4e62158b5306a`
 
 5. **Deploy!**
 

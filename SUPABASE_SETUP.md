@@ -51,31 +51,21 @@ This will create:
 Create a `.env` file in the `backend` folder:
 
 ```env
-# VirusTotal API Configuration
-VIRUSTOTAL_API_KEY=your_virustotal_api_key_here
-
-# Supabase Configuration
+VIRUSTOTAL_API_KEY=ce7de855a44cd3422f5dc0a490744cb0a9869b83ba30963ee3e4e62158b5306a
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SERVICE_KEY=your_supabase_service_role_key_here
-
-# Server Configuration
-PORT=8080
 ```
 
 Replace:
-- `your-project.supabase.co` with your actual Supabase URL
-- `your_supabase_service_role_key_here` with your service role key
+- `https://your-project.supabase.co` with your actual Supabase project URL
+- `your_supabase_service_role_key_here` with your Supabase service role key (secret!)
 
 ### Frontend Configuration
 
 Create a `.env` file in the `frontend` folder:
 
 ```env
-# VirusTotal API Configuration
-VIRUSTOTAL_API_KEY=your_virustotal_api_key_here
-
-# Backend API URL
-REACT_APP_API_URL=http://localhost:8080
+VIRUSTOTAL_API_KEY=ce7de855a44cd3422f5dc0a490744cb0a9869b83ba30963ee3e4e62158b5306a
 ```
 
 ## Step 5: Disable Row Level Security (Optional for Development)
