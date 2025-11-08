@@ -9,14 +9,46 @@
       }
     },
     {
-      "src": "backend/servidor.js",
+      "src": "backEnd/servidor.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "backend/servidor.js"
+      "src": "/check-site",
+      "dest": "backEnd/servidor.js"
+    },
+    {
+      "src": "/check-file",
+      "dest": "backEnd/servidor.js"
+    },
+    {
+      "src": "/criarUsuario",
+      "dest": "backEnd/servidor.js"
+    },
+    {
+      "src": "/usuario/(.*)",
+      "dest": "backEnd/servidor.js"
+    },
+    {
+      "src": "/usuarios",
+      "dest": "backEnd/servidor.js"
+    },
+    {
+      "src": "/excluirUsuario/(.*)",
+      "dest": "backEnd/servidor.js"
+    },
+    {
+      "src": "/uploadperfilimage",
+      "dest": "backEnd/servidor.js"
+    },
+    {
+      "src": "/posts(.*)",
+      "dest": "backEnd/servidor.js"
+    },
+    {
+      "src": "/forum/(.*)",
+      "dest": "backEnd/servidor.js"
     },
     {
       "src": "/(.*)",
