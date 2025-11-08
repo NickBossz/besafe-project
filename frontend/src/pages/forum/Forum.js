@@ -65,9 +65,25 @@ export default function Forum() {
       const res = await axios.get(`${API_URL}/posts`, {
         params: { site: filter }
       });
-      setPosts(res.data);
 
-      const uniqueAuthors = [...new Set(res.data.map(post => post.authorUsername))];
+      // Garantir que res.data é um array e mapear campos do backend
+      const postsData = Array.isArray(res.data) ? res.data : [];
+      const mappedPosts = postsData.map(post => ({
+        id: post.id,
+        siteName: post.site_name,
+        description: post.description,
+        category: post.category,
+        authorUsername: post.author_username,
+        likes: post.likes || 0,
+        dislikes: post.dislikes || 0,
+        likedUsers: post.liked_users || [],
+        dislikedUsers: post.disliked_users || [],
+        created_at: post.created_at
+      }));
+
+      setPosts(mappedPosts);
+
+      const uniqueAuthors = [...new Set(mappedPosts.map(post => post.authorUsername))];
       const photos = {};
 
       await Promise.all(
