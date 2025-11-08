@@ -8,11 +8,5 @@
         "distDir": "build"
       }
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/(check-site|check-file|criarUsuario|usuario|usuarios|excluirUsuario|uploadperfilimage|posts|forum)/:path*",
-      "destination": "/api/:path*"
-    }
   ]
 }
