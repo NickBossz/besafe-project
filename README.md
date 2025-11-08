@@ -1,254 +1,200 @@
-# 🛡️ BE SAFE - Digital Security Platform
+# 🛡️ BE SAFE - Plataforma de Segurança Digital
 
 [![React](https://img.shields.io/badge/React-18.0.0-blue.svg)](https://reactjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-16.0.0-green.svg)](https://nodejs.org/)
 [![Python](https://img.shields.io/badge/Python-3.8+-yellow.svg)](https://python.org/)
 [![License](https://img.shields.io/badge/License-MIT-red.svg)](LICENSE)
 
-A complete digital security platform with a hacker theme, offering URL verification, file analysis, discussion forum, and security tips.
+Uma plataforma completa de segurança digital com tema hacker, oferecendo verificação de URLs, análise de arquivos, fórum de discussão e dicas de segurança.
 
-## 🚀 Features
+## 🚀 Funcionalidades
 
 ### 🔍 **Checker App**
-- **URL Verification**: Security analysis using VirusTotal and AI
-- **File Verification**: Malware detection with intelligent scoring system
-- **Modern Interface**: Drag & drop for file uploads
-- **Detailed Results**: Complete reports with explanations
+- **Verificação de URLs**: Análise de segurança usando VirusTotal e IA
+- **Verificação de Arquivos**: Detecção de malware com sistema de score inteligente
+- **Interface Moderna**: Drag & drop para upload de arquivos
+- **Resultados Detalhados**: Relatórios completos com explicações
 
-### 💬 **Security Forum**
-- **Site Reviews**: Category system (Positive, Negative, Warning)
-- **Advanced Filters**: Search by site, category, and sorting
-- **Voting System**: Like/Dislike on posts
-- **Responsive Interface**: Works perfectly on mobile
+### 💬 **Fórum de Segurança**
+- **Avaliação de Sites**: Sistema de categorias (Positiva, Negativa, Aviso)
+- **Filtros Avançados**: Busca por site, categoria e ordenação
+- **Sistema de Votos**: Like/Dislike nas publicações
+- **Interface Responsiva**: Funciona perfeitamente em mobile
 
-### 💡 **Security Tips**
-- **Educational Content**: Practical digital security tips
-- **Interactive Interface**: Modern and intuitive design
-- **Categorization**: Organization by security themes
+### 💡 **Dicas de Segurança**
+- **Conteúdo Educativo**: Dicas práticas de segurança digital
+- **Interface Interativa**: Design moderno e intuitivo
+- **Categorização**: Organização por temas de segurança
 
-### 👤 **User System**
-- **Registration and Login**: Complete authentication system
-- **Custom Profiles**: Profile picture upload
-- **Activity History**: User posts and interactions
+### 👤 **Sistema de Usuários**
+- **Registro e Login**: Sistema completo de autenticação
+- **Perfis Personalizados**: Upload de foto de perfil
+- **Histórico de Atividades**: Posts e interações do usuário
 
-## 🛠️ Technologies Used
+## 🛠️ Tecnologias Utilizadas
 
 ### **Frontend**
-- **React 18** - Main framework
-- **Framer Motion** - Smooth animations
-- **React Router** - Navigation
-- **React Hot Toast** - Notifications
-- **Lucide React** - Modern icons
-- **CSS Modules** - Modular styling
+- **React 18** - Framework principal
+- **Framer Motion** - Animações suaves
+- **React Router** - Navegação
+- **React Hot Toast** - Notificações
+- **Lucide React** - Ícones modernos
+- **CSS Modules** - Estilização modular
 
 ### **Backend**
-- **Node.js** - JavaScript server
-- **Express.js** - Web framework
-- **Supabase (PostgreSQL)** - Cloud database
-- **Supabase JS Client** - Database client
-- **Python** - Analysis scripts
-- **VirusTotal API** - Security verification
+- **Node.js** - Servidor JavaScript
+- **Express.js** - Framework web
+- **SQLite** - Banco de dados
+- **Sequelize** - ORM
+- **Python** - Scripts de análise
+- **VirusTotal API** - Verificação de segurança
 
-### **External APIs**
-- **VirusTotal** - URL and file analysis
-- **Machine Learning** - Risk prediction
+### **APIs Externas**
+- **VirusTotal** - Análise de URLs e arquivos
+- **Machine Learning** - Predição de risco
 
-## 📦 Installation
+## 📦 Instalação
 
-### Prerequisites
-- Node.js 16+
+### Pré-requisitos
+- Node.js 16+ 
 - Python 3.8+
-- npm or yarn
-- A Supabase account ([sign up here](https://supabase.com))
+- npm ou yarn
 
-### 1. Clone the repository
+### 1. Clone o repositório
 ```bash
-git clone https://github.com/your-username/be-safe.git
+git clone https://github.com/seu-usuario/be-safe.git
 cd be-safe
 ```
 
-### 2. Install all dependencies
+### 2. Instale as dependências do Frontend
 ```bash
-npm run install:all
-```
-
-Or install manually:
-
-```bash
-# Root dependencies
-npm install
-
-# Frontend dependencies
-cd frontend
-npm install
-
-# Backend dependencies
-cd ../backend
 npm install
 ```
 
-### 3. Set up Supabase
+### 3. Instale as dependências do Backend
+```bash
+cd backEnd
+npm install
+```
 
-Follow the detailed guide in [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) to:
-1. Create a Supabase project
-2. Run the database schema
-3. Get your API keys
-
-### 4. Configure environment variables
-
-**Backend** (`backend/.env`):
+### 4. Configure as variáveis de ambiente
+Crie um arquivo `.env` na raiz do projeto:
 ```env
-VIRUSTOTAL_API_KEY=ce7de855a44cd3422f5dc0a490744cb0a9869b83ba30963ee3e4e62158b5306a
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_KEY=your_supabase_service_role_key
+VIRUSTOTAL_API_KEY=sua_chave_api_aqui
 ```
 
-**Frontend** (`frontend/.env`):
-```env
-VIRUSTOTAL_API_KEY=ce7de855a44cd3422f5dc0a490744cb0a9869b83ba30963ee3e4e62158b5306a
-```
-
-Replace the Supabase values with your actual credentials from Step 3.
-
-### 5. Run the project
-
-**Development mode (both frontend and backend):**
-```bash
-npm run dev
-```
-
-**Or run separately:**
+### 5. Execute o projeto
 
 **Terminal 1 - Backend:**
 ```bash
-npm run dev:backend
+cd backEnd
+node servidor.js
 ```
 
 **Terminal 2 - Frontend:**
 ```bash
-npm run dev:frontend
+npm start
 ```
 
-The project will be available at `http://localhost:3000`
+O projeto estará disponível em `http://localhost:3000`
 
-## 🎨 Design Features
+## 🎨 Características do Design
 
-### **Hacker Theme**
-- **Neon Colors**: Green (#00ff00), Cyan (#00ffff), Magenta (#ff00ff)
-- **Typography**: Courier New for terminal effect
-- **Visual Effects**: Scanlines, particles, gradients
-- **Animations**: Smooth and responsive transitions
+### **Tema Hacker**
+- **Cores Neon**: Verde (#00ff00), Ciano (#00ffff), Magenta (#ff00ff)
+- **Tipografia**: Courier New para efeito terminal
+- **Efeitos Visuais**: Scanlines, partículas, gradientes
+- **Animações**: Transições suaves e responsivas
 
-### **Responsive Interface**
-- **Desktop**: Full layout with sidebar
-- **Tablet**: Automatic adaptation
-- **Mobile**: Hamburger menu and optimized layout
+### **Interface Responsiva**
+- **Desktop**: Layout completo com sidebar
+- **Tablet**: Adaptação automática
+- **Mobile**: Menu hambúrguer e layout otimizado
 
-## 🔧 Project Structure
+## 🔧 Estrutura do Projeto
 
 ```
-be-safe-monorepo/
-├── frontend/                     # React Frontend
-│   ├── src/
-│   │   ├── pages/                # Page components
-│   │   │   ├── checkerapp/       # URL/File checker
-│   │   │   ├── forum/            # Discussion forum
-│   │   │   ├── dicas/            # Security tips
-│   │   │   ├── perfil/           # User profile
-│   │   │   ├── login/            # Login system
-│   │   │   └── menu/             # Navigation menu
-│   │   ├── App.js                # Main component
-│   │   └── UserTypeContext.js    # User context
-│   ├── public/                   # Static files
-│   └── package.json
-├── backend/                      # Node.js Backend
-│   ├── CRUDS/                    # Database operations
-│   │   ├── CrudPosts.js          # Posts CRUD
-│   │   └── CrudUsuarios.js       # Users CRUD
-│   ├── servidor.js               # Main server
-│   ├── SiteChecker.py            # Python script
-│   └── package.json
-├── package.json                  # Root package.json (monorepo)
-├── vercel.json                   # Vercel configuration
-└── README.md                     # This file
+webthon/
+├── src/                          # Frontend React
+│   ├── pages/                    # Componentes de páginas
+│   │   ├── checkerapp/           # Verificador de URLs/Arquivos
+│   │   ├── forum/                # Fórum de discussão
+│   │   ├── dicas/                # Dicas de segurança
+│   │   ├── perfil/               # Perfil do usuário
+│   │   ├── login/                # Sistema de login
+│   │   └── menu/                 # Menu de navegação
+│   ├── App.js                    # Componente principal
+│   └── UserTypeContext.js        # Contexto de usuário
+├── backEnd/                      # Backend Node.js
+│   ├── CRUDS/                    # Operações de banco
+│   │   ├── CrudPosts.js          # CRUD de posts
+│   │   └── CrudUsuarios.js       # CRUD de usuários
+│   ├── servidor.js               # Servidor principal
+│   └── SiteChecker.py            # Script Python
+├── public/                       # Arquivos estáticos
+└── README.md                     # Este arquivo
 ```
 
-## 🚀 How to Use
+## 🚀 Como Usar
 
-### **URL Verification**
-1. Access "Checker App"
-2. Select "Verify URL"
-3. Paste the suspicious URL
-4. Wait for analysis
-5. View detailed report
+### **Verificação de URLs**
+1. Acesse o "Checker App"
+2. Selecione "Verificar URL"
+3. Cole a URL suspeita
+4. Aguarde a análise
+5. Veja o relatório detalhado
 
-### **File Verification**
-1. Access "Checker App"
-2. Select "Verify File"
-3. Drag and drop the file (max. 50MB)
-4. Wait for VirusTotal analysis
-5. View security score
+### **Verificação de Arquivos**
+1. Acesse o "Checker App"
+2. Selecione "Verificar Arquivo"
+3. Arraste e solte o arquivo (máx. 50MB)
+4. Aguarde a análise no VirusTotal
+5. Veja o score de segurança
 
-### **Forum**
-1. Access "Forum"
-2. Use filters to find posts
-3. Create a new post
-4. Vote on other users' posts
+### **Fórum**
+1. Acesse o "Fórum"
+2. Use os filtros para encontrar posts
+3. Crie uma nova publicação
+4. Vote nas publicações dos outros
 
-## 🔒 Security
+## 🔒 Segurança
 
-- **Input Validation**: All data is validated
-- **Sanitization**: XSS and injection protection
-- **Rate Limiting**: Spam protection
-- **HTTPS**: Recommended for production
+- **Validação de Entrada**: Todos os dados são validados
+- **Sanitização**: Proteção contra XSS e injeção
+- **Rate Limiting**: Proteção contra spam
+- **HTTPS**: Recomendado para produção
 
-## 🌐 Deployment on Vercel
+## 🤝 Contribuindo
 
-For detailed deployment instructions, see **[VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md)**.
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
 
-### Quick Deploy
+## 📝 Licença
 
-1. **Set up Supabase**: Follow [SUPABASE_SETUP.md](./SUPABASE_SETUP.md)
-2. **Push to GitHub**: `git push origin main`
-3. **Import on Vercel**: Go to [vercel.com/new](https://vercel.com/new)
-4. **Add environment variables**:
-   - Backend: `VIRUSTOTAL_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`
-   - Frontend: `VIRUSTOTAL_API_KEY`
-5. **Deploy!**
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for troubleshooting, monitoring, and advanced configuration.
+## 👨‍💻 Autor
 
-## 🤝 Contributing
+**Seu Nome**
+- GitHub: [@seu-usuario](https://github.com/seu-usuario)
+- LinkedIn: [Seu LinkedIn](https://linkedin.com/in/seu-perfil)
 
-1. Fork the project
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## 🙏 Agradecimentos
 
-## 📝 License
+- **VirusTotal** pela API de análise de segurança
+- **React Team** pelo framework incrível
+- **Comunidade Open Source** por todas as bibliotecas utilizadas
 
-This project is under the MIT license. See the [LICENSE](LICENSE) file for more details.
+## 📊 Status do Projeto
 
-## 👨‍💻 Author
-
-**Your Name**
-- GitHub: [@your-username](https://github.com/your-username)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/your-profile)
-
-## 🙏 Acknowledgments
-
-- **VirusTotal** for the security analysis API
-- **React Team** for the amazing framework
-- **Open Source Community** for all the libraries used
-
-## 📊 Project Status
-
-![GitHub last commit](https://img.shields.io/github/last-commit/your-username/be-safe)
-![GitHub issues](https://img.shields.io/github/issues/your-username/be-safe)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/your-username/be-safe)
-![GitHub stars](https://img.shields.io/github/stars/your-username/be-safe)
+![GitHub last commit](https://img.shields.io/github/last-commit/seu-usuario/be-safe)
+![GitHub issues](https://img.shields.io/github/issues/seu-usuario/be-safe)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/seu-usuario/be-safe)
+![GitHub stars](https://img.shields.io/github/stars/seu-usuario/be-safe)
 
 ---
 
-⭐ **If this project helped you, consider giving it a star!**
+⭐ **Se este projeto te ajudou, considere dar uma estrela!**

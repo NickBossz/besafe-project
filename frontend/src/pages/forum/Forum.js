@@ -5,7 +5,6 @@ import { useUserType } from '../../UserTypeContext.js';
 import { useNotifications } from '../NotificationManager.js';
 import { Buffer } from 'buffer';
 import { Search, Filter, SortAsc, SortDesc, Plus, ThumbsUp, ThumbsDown, Edit, Trash, Shield, AlertTriangle, XCircle } from 'lucide-react';
-import API_URL from '../../config/api';
 
 export default function Forum() {
   const { userType } = useUserType();
@@ -62,34 +61,18 @@ export default function Forum() {
 
   const fetchPosts = useCallback(async (filter = '') => {
     try {
-      const res = await axios.get(`${API_URL}/posts`, {
+      const res = await axios.get('http://localhost:8080/posts', {
         params: { site: filter }
       });
+      setPosts(res.data);
 
-      // Garantir que res.data é um array e mapear campos do backend
-      const postsData = Array.isArray(res.data) ? res.data : [];
-      const mappedPosts = postsData.map(post => ({
-        id: post.id,
-        siteName: post.site_name,
-        description: post.description,
-        category: post.category,
-        authorUsername: post.author_username,
-        likes: post.likes || 0,
-        dislikes: post.dislikes || 0,
-        likedUsers: post.liked_users || [],
-        dislikedUsers: post.disliked_users || [],
-        created_at: post.created_at
-      }));
-
-      setPosts(mappedPosts);
-
-      const uniqueAuthors = [...new Set(mappedPosts.map(post => post.authorUsername))];
+      const uniqueAuthors = [...new Set(res.data.map(post => post.authorUsername))];
       const photos = {};
 
       await Promise.all(
         uniqueAuthors.map(async (username) => {
           try {
-            const response = await axios.get(`${API_URL}/usuario/${username}`);
+            const response = await axios.get(`http://localhost:8080/usuario/${username}`);
             const { header_image, bytes_image } = response.data.dados;
             const imgSrc = montarImagem(header_image, bytes_image);
             if (imgSrc) photos[username] = imgSrc;
@@ -214,10 +197,10 @@ export default function Forum() {
 
     try {
       if (editingPost) {
-        await axios.put(`${API_URL}/posts/${editingPost.id}`, payload);
+        await axios.put(`http://localhost:8080/posts/${editingPost.id}`, payload);
         addNotification('Publicação atualizada com sucesso!', 'success');
       } else {
-        await axios.post(`${API_URL}/posts`, payload);
+        await axios.post('http://localhost:8080/posts', payload);
         addNotification('Publicação criada com sucesso!', 'success');
       }
       fetchPosts(search);
@@ -235,7 +218,7 @@ export default function Forum() {
     }
     if (!window.confirm('Confirma exclusão da publicação?')) return;
     try {
-      await axios.delete(`${API_URL}/posts/${id}`, { data: { authorUsername: userType.username } });
+      await axios.delete(`http://localhost:8080/posts/${id}`, { data: { authorUsername: userType.username } });
       addNotification('Publicação excluída com sucesso!', 'success');
       fetchPosts(search);
     } catch (err) {
@@ -250,7 +233,7 @@ export default function Forum() {
       return;
     }
     try {
-      await axios.post(`${API_URL}/posts/${id}/vote`, {
+      await axios.post(`http://localhost:8080/posts/${id}/vote`, {
         authorUsername: userType.username,
         type: tipo,
       });

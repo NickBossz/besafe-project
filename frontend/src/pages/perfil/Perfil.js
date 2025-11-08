@@ -5,7 +5,6 @@ import { Buffer } from 'buffer'
 import { useNotifications } from '../NotificationManager.js'
 import { useParams } from 'react-router-dom'
 import { useUserType } from '../../UserTypeContext.js'
-import API_URL from '../../config/api'
 
 function Perfil() {
   const { username } = useParams()
@@ -25,7 +24,7 @@ function Perfil() {
         setProfilePicture(base64String)
 
         try {
-          const response = await axios.post(`${API_URL}/uploadperfilimage`, {
+          const response = await axios.post('http://localhost:8080/uploadperfilimage', {
             username: username,
             base64String: base64String,
           })
@@ -49,7 +48,7 @@ function Perfil() {
   useEffect(() => {
     async function getPictureAndRoleSaved() {
       try {
-        const response = await axios.get(`${API_URL}/usuario/${username}`)
+        const response = await axios.get(`http://localhost:8080/usuario/${username}`)
 
         const { header_image, bytes_image } = response.data.dados
         const { role } = response.data.dados
@@ -73,7 +72,7 @@ function Perfil() {
 
     async function getUserPosts() {
       try {
-        const response = await axios.get(`${API_URL}/forum/posts/${username}`)
+        const response = await axios.get(`http://localhost:8080/forum/posts/${username}`)
         setPosts(response.data.posts || [])
       } catch (error) {
         console.error('Erro ao buscar publicações do usuário:', error)

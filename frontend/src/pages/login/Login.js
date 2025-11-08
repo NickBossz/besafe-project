@@ -3,7 +3,6 @@ import styles from '../Auth.module.css'
 import axios from 'axios'
 import { useUserType } from '../../UserTypeContext'
 import { useNotifications } from '../NotificationManager'
-import API_URL from '../../config/api'
 
 function Login({ closeModal, onRegisterClick }) {
     const [usuario, setUsuario] = useState('')
@@ -15,7 +14,7 @@ function Login({ closeModal, onRegisterClick }) {
         if (!checarInputs()) return
 
         try {
-            const response = await axios.get(`${API_URL}/usuario/${usuario}`)
+            const response = await axios.get("http://localhost:8080/usuario/" + usuario)
             if (response.data.dados.password === senha) {
                 setUserType(response.data.dados)
                 window.history.pushState({}, '', '/')

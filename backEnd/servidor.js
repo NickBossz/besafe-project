@@ -11,9 +11,6 @@ const FormData = require('form-data');
 const crypto = require('crypto');
 const fs = require('fs').promises;
 
-// Importar e testar conexão com Supabase
-const { testConnection } = require('./config/supabase');
-
 const servidorBackend = express();
 const PORT = process.env.PORT || 8080;
 const VIRUSTOTAL_API_KEY = process.env.VIRUSTOTAL_API_KEY;
@@ -112,21 +109,12 @@ servidorBackend.use(express.json({ limit: '50mb' }));
 servidorBackend.use(express.urlencoded({ extended: true, limit: '50mb' }));
 servidorBackend.use(cors({ origin: '*', allowedHeaders: '*' }));
 
-// Start server only if not in Vercel environment
-if (process.env.VERCEL !== '1') {
-  servidorBackend.listen(PORT, async () => {
-    console.log('🚀 Servidor backend iniciado com sucesso!');
-    console.log(`📍 URL: http://localhost:${PORT}`);
-    console.log(`🔑 VirusTotal API: ${VIRUSTOTAL_API_KEY ? '✅ Configurada' : '❌ Não configurada'}`);
-    console.log('📁 Variáveis de ambiente carregadas do arquivo .env');
-
-    // Testa conexão com Supabase
-    await testConnection();
-  });
-}
-
-// Export for Vercel
-module.exports = servidorBackend;
+servidorBackend.listen(PORT, () => {
+  console.log('🚀 Servidor backend iniciado com sucesso!');
+  console.log(`📍 URL: http://localhost:${PORT}`);
+  console.log(`🔑 VirusTotal API: ${VIRUSTOTAL_API_KEY ? '✅ Configurada' : '❌ Não configurada'}`);
+  console.log('📁 Variáveis de ambiente carregadas do arquivo .env');
+});
 
 // -------- CHECK-SITE ----------
 servidorBackend.post('/check-site', async (req, res) => {
