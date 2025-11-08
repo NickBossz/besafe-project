@@ -1,6 +1,5 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { UserTypeProvider } from './UserTypeContext.js';
 import { NotificationProvider } from './pages/NotificationManager.js';
 import { Toaster } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,9 +7,7 @@ import { useEffect, useState } from 'react';
 import PaginaInicial from './pages/paginainicial/PaginaInicial.js';
 import Menu from './pages/menu/Menu.js'
 import Dicas from './pages/dicas/Dicas.js'
-import Perfil from './pages/perfil/Perfil.js';
 import CheckerApp from './pages/checkerapp/CheckerApp.js';
-import Forum from './pages/forum/Forum.js';
 
 // Componente de efeitos visuais otimizado
 const VisualEffects = () => {
@@ -137,9 +134,7 @@ function App() {
                   <Routes>
                     <Route path='/' element={<PaginaInicial />} />
                     <Route path='/dicas' element={<Dicas />} />
-                    <Route path='/perfil/:username' element={<Perfil />} />
                     <Route path='/checkerApp' element={<CheckerApp />} />
-                    <Route path='/forum' element={<Forum />} />
                   </Routes>
                 </motion.div>
               </NotificationProvider>
@@ -182,12 +177,4 @@ function App() {
   );
 }
 
-const Root = () => (
-  <NotificationProvider>
-    <UserTypeProvider>
-      <App />
-    </UserTypeProvider>
-  </NotificationProvider>
-);
-
-export default Root;
+export default App;

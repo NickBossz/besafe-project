@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Lightbulb, Search, Users, User, LogIn, LogOut, Menu as MenuIcon, X } from 'lucide-react'
+import { Home, Lightbulb, Search, Menu as MenuIcon, X } from 'lucide-react'
 import styles from './Menu.module.css'
 import { Link } from 'react-router-dom'
-import Login from '../login/Login.js'
-import Registrar from '../registrar/Registrar.js'
-import { useUserType } from '../../UserTypeContext.js'
-import toast from 'react-hot-toast'
 
 const Menu = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [isRegisterMode, setIsRegisterMode] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
-    const { userType, setUserType } = useUserType()
-    const navigate = useNavigate()
     const location = useLocation()
 
     // Detectar scroll para efeito de transparência
@@ -34,39 +26,6 @@ const Menu = () => {
         setIsMobileMenuOpen(false)
     }, [location.pathname])
 
-    // Limpar classe modal-open quando componente for desmontado
-    useEffect(() => {
-        return () => {
-            document.body.classList.remove('modal-open')
-        }
-    }, [])
-
-    const handleLoginClick = () => {
-        setIsRegisterMode(false)
-        setIsModalOpen(true)
-        document.body.classList.add('modal-open')
-        toast.success('Abrindo tela de login...')
-    }
-
-    const handleRegisterClick = () => {
-        setIsRegisterMode(true)
-        setIsModalOpen(true)
-        document.body.classList.add('modal-open')
-        toast.success('Abrindo tela de registro...')
-    }
-
-    const closeModal = () => {
-        setIsModalOpen(false)
-        document.body.classList.remove('modal-open')
-    }
-
-    const loggout = () => {
-        setUserType(null)
-        navigate('/')
-        toast.success('Logout realizado com sucesso!')
-        window.location.reload()
-    }
-
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen)
     }
@@ -75,7 +34,6 @@ const Menu = () => {
         { path: '/', label: 'INICIO', icon: Home },
         { path: '/dicas', label: 'DICAS', icon: Lightbulb },
         { path: '/checkerApp', label: 'APP CHECKER', icon: Search },
-        { path: '/forum', label: 'FORUM', icon: Users },
     ]
 
     const menuVariants = {
@@ -135,7 +93,7 @@ const Menu = () => {
                 {menuItems.map((item) => {
                     const Icon = item.icon
                     const isActive = location.pathname === item.path
-                    
+
                     return (
                         <motion.div
                             key={item.path}
@@ -143,8 +101,8 @@ const Menu = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            <Link 
-                                to={item.path} 
+                            <Link
+                                to={item.path}
                                 className={`${styles.navLink} ${isActive ? styles.active : ''}`}
                             >
                                 <Icon size={16} />
@@ -161,22 +119,6 @@ const Menu = () => {
                         </motion.div>
                     )
                 })}
-                
-                {userType !== null && (
-                    <motion.div
-                        variants={itemVariants}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <Link 
-                            to={'/perfil/' + userType.username} 
-                            className={`${styles.navLink} ${location.pathname.includes('/perfil') ? styles.active : ''}`}
-                        >
-                            <User size={16} />
-                            <span>PERFIL</span>
-                        </Link>
-                    </motion.div>
-                )}
             </motion.nav>
 
             {/* Mobile Menu Button */}
@@ -189,33 +131,6 @@ const Menu = () => {
                 {isMobileMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
             </motion.button>
 
-            {/* Auth Button */}
-            <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-            >
-                {userType !== null ? (
-                    <motion.button 
-                        className={styles.loginButton} 
-                        onClick={loggout}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <LogOut size={16} />
-                        <span>Sair</span>
-                    </motion.button>
-                ) : (
-                    <motion.button 
-                        className={styles.loginButton} 
-                        onClick={handleLoginClick}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <LogIn size={16} />
-                        <span>Entrar</span>
-                    </motion.button>
-                )}
-            </motion.div>
 
             {/* Mobile Menu */}
             <AnimatePresence>
@@ -230,7 +145,7 @@ const Menu = () => {
                         {menuItems.map((item) => {
                             const Icon = item.icon
                             const isActive = location.pathname === item.path
-                            
+
                             return (
                                 <motion.div
                                     key={item.path}
@@ -238,8 +153,8 @@ const Menu = () => {
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.1 }}
                                 >
-                                    <Link 
-                                        to={item.path} 
+                                    <Link
+                                        to={item.path}
                                         className={`${styles.mobileNavLink} ${isActive ? styles.active : ''}`}
                                         onClick={() => setIsMobileMenuOpen(false)}
                                     >
@@ -249,53 +164,6 @@ const Menu = () => {
                                 </motion.div>
                             )
                         })}
-                        
-                        {userType !== null && (
-                            <motion.div
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.1 }}
-                            >
-                                <Link 
-                                    to={'/perfil/' + userType.username} 
-                                    className={`${styles.mobileNavLink} ${location.pathname.includes('/perfil') ? styles.active : ''}`}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    <User size={20} />
-                                    <span>PERFIL</span>
-                                </Link>
-                            </motion.div>
-                        )}
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
-            {/* Auth Modal */}
-            <AnimatePresence>
-                {isModalOpen && (
-                    <motion.div
-                        style={{
-                            position: 'fixed',
-                            top: 0,
-                            left: 0,
-                            width: '100vw',
-                            height: '100vh',
-                            zIndex: 9999,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: '20px',
-                            boxSizing: 'border-box'
-                        }}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        {isRegisterMode ? 
-                            <Registrar closeModal={closeModal} onLoginClick={handleLoginClick} /> :
-                            <Login closeModal={closeModal} onRegisterClick={handleRegisterClick} />
-                        }
                     </motion.div>
                 )}
             </AnimatePresence>
