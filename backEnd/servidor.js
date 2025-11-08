@@ -112,15 +112,21 @@ servidorBackend.use(express.json({ limit: '50mb' }));
 servidorBackend.use(express.urlencoded({ extended: true, limit: '50mb' }));
 servidorBackend.use(cors({ origin: '*', allowedHeaders: '*' }));
 
-servidorBackend.listen(PORT, async () => {
-  console.log('🚀 Servidor backend iniciado com sucesso!');
-  console.log(`📍 URL: http://localhost:${PORT}`);
-  console.log(`🔑 VirusTotal API: ${VIRUSTOTAL_API_KEY ? '✅ Configurada' : '❌ Não configurada'}`);
-  console.log('📁 Variáveis de ambiente carregadas do arquivo .env');
+// Start server only if not in Vercel environment
+if (process.env.VERCEL !== '1') {
+  servidorBackend.listen(PORT, async () => {
+    console.log('🚀 Servidor backend iniciado com sucesso!');
+    console.log(`📍 URL: http://localhost:${PORT}`);
+    console.log(`🔑 VirusTotal API: ${VIRUSTOTAL_API_KEY ? '✅ Configurada' : '❌ Não configurada'}`);
+    console.log('📁 Variáveis de ambiente carregadas do arquivo .env');
 
-  // Testa conexão com Supabase
-  await testConnection();
-});
+    // Testa conexão com Supabase
+    await testConnection();
+  });
+}
+
+// Export for Vercel
+module.exports = servidorBackend;
 
 // -------- CHECK-SITE ----------
 servidorBackend.post('/check-site', async (req, res) => {

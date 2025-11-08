@@ -9,69 +9,60 @@
       }
     },
     {
-      "src": "backend/servidor.js",
+      "src": "backEnd/api/index.js",
       "use": "@vercel/node"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/check-site",
+      "destination": "/api/check-site"
+    },
+    {
+      "source": "/check-file",
+      "destination": "/api/check-file"
+    },
+    {
+      "source": "/criarUsuario",
+      "destination": "/api/criarUsuario"
+    },
+    {
+      "source": "/usuario/:username",
+      "destination": "/api/usuario/:username"
+    },
+    {
+      "source": "/usuarios",
+      "destination": "/api/usuarios"
+    },
+    {
+      "source": "/excluirUsuario/:username",
+      "destination": "/api/excluirUsuario/:username"
+    },
+    {
+      "source": "/uploadperfilimage",
+      "destination": "/api/uploadperfilimage"
+    },
+    {
+      "source": "/posts/:id/vote",
+      "destination": "/api/posts/:id/vote"
+    },
+    {
+      "source": "/posts/:id",
+      "destination": "/api/posts/:id"
+    },
+    {
+      "source": "/posts",
+      "destination": "/api/posts"
+    },
+    {
+      "source": "/forum/posts/:username",
+      "destination": "/api/forum/posts/:username"
     }
   ],
   "routes": [
     {
-      "src": "/check-site",
-      "methods": ["POST", "OPTIONS"],
-      "dest": "backend/servidor.js"
-    },
-    {
-      "src": "/check-file",
-      "methods": ["POST", "OPTIONS"],
-      "dest": "backend/servidor.js"
-    },
-    {
-      "src": "/criarUsuario",
-      "methods": ["POST", "OPTIONS"],
-      "dest": "backend/servidor.js"
-    },
-    {
-      "src": "/usuario/(.*)",
-      "methods": ["GET", "OPTIONS"],
-      "dest": "backend/servidor.js"
-    },
-    {
-      "src": "/usuarios",
-      "methods": ["GET", "OPTIONS"],
-      "dest": "backend/servidor.js"
-    },
-    {
-      "src": "/excluirUsuario/(.*)",
-      "methods": ["DELETE", "OPTIONS"],
-      "dest": "backend/servidor.js"
-    },
-    {
-      "src": "/uploadperfilimage",
-      "methods": ["POST", "OPTIONS"],
-      "dest": "backend/servidor.js"
-    },
-    {
-      "src": "/posts/(.*)/vote",
-      "methods": ["POST", "OPTIONS"],
-      "dest": "backend/servidor.js"
-    },
-    {
-      "src": "/posts/(.*)",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      "dest": "backend/servidor.js"
-    },
-    {
-      "src": "/posts",
-      "methods": ["GET", "POST", "OPTIONS"],
-      "dest": "backend/servidor.js"
-    },
-    {
-      "src": "/forum/(.*)",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      "dest": "backend/servidor.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "frontend/$1"
+      "src": "/api/(.*)",
+      "dest": "backEnd/api/index.js"
     }
   ]
 }
