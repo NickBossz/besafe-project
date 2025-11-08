@@ -1,23 +1,24 @@
 {
   "name": "backend",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "2.0.0",
+  "main": "servidor.js",
   "scripts": {
+    "start": "node servidor.js",
+    "dev": "node servidor.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["api", "backend", "security", "supabase"],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "BE SAFE Backend API with Supabase",
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
     "axios": "^1.10.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "dotenv": "^17.0.1",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "form-data": "^4.0.3",
-    "formidable": "^3.5.4",
-    "sequelize": "^6.37.7",
-    "sqlite3": "^5.1.7"
+    "formidable": "^3.5.4"
   }
 }

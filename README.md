@@ -44,8 +44,8 @@ A complete digital security platform with a hacker theme, offering URL verificat
 ### **Backend**
 - **Node.js** - JavaScript server
 - **Express.js** - Web framework
-- **SQLite** - Database
-- **Sequelize** - ORM
+- **Supabase (PostgreSQL)** - Cloud database
+- **Supabase JS Client** - Database client
 - **Python** - Analysis scripts
 - **VirusTotal API** - Security verification
 
@@ -59,6 +59,7 @@ A complete digital security platform with a hacker theme, offering URL verificat
 - Node.js 16+
 - Python 3.8+
 - npm or yarn
+- A Supabase account ([sign up here](https://supabase.com))
 
 ### 1. Clone the repository
 ```bash
@@ -86,13 +87,35 @@ cd ../backend
 npm install
 ```
 
-### 3. Configure environment variables
-Create a `.env` file in the frontend folder:
+### 3. Set up Supabase
+
+Follow the detailed guide in [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) to:
+1. Create a Supabase project
+2. Run the database schema
+3. Get your API keys
+
+### 4. Configure environment variables
+
+**Backend** (`.env` in `backend` folder):
 ```env
-VIRUSTOTAL_API_KEY=your_api_key_here
+# VirusTotal API
+VIRUSTOTAL_API_KEY=your_virustotal_api_key_here
+
+# Supabase
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_KEY=your_supabase_service_role_key_here
+
+# Server
+PORT=8080
 ```
 
-### 4. Run the project
+**Frontend** (`.env` in `frontend` folder):
+```env
+VIRUSTOTAL_API_KEY=your_virustotal_api_key_here
+REACT_APP_API_URL=http://localhost:8080
+```
+
+### 5. Run the project
 
 **Development mode (both frontend and backend):**
 ```bash
@@ -188,16 +211,38 @@ be-safe-monorepo/
 
 ### Quick Deploy
 
-1. Push your code to GitHub
-2. Import the project on Vercel
-3. Vercel will automatically detect the monorepo structure
-4. Add environment variables:
+1. **Set up Supabase** (if not done already):
+   - Follow [SUPABASE_SETUP.md](./SUPABASE_SETUP.md)
+   - Make sure your database schema is created
+
+2. **Push your code to GitHub**
+
+3. **Import the project on Vercel**:
+   - Vercel will automatically detect the monorepo structure
+
+4. **Add environment variables** in Vercel dashboard:
+
+   **Backend Environment Variables:**
    - `VIRUSTOTAL_API_KEY`: Your VirusTotal API key
-5. Deploy!
+   - `SUPABASE_URL`: Your Supabase project URL
+   - `SUPABASE_SERVICE_KEY`: Your Supabase service role key
+
+   **Frontend Environment Variables:**
+   - `VIRUSTOTAL_API_KEY`: Your VirusTotal API key
+   - `REACT_APP_API_URL`: Your backend API URL (e.g., `https://your-project.vercel.app/api`)
+
+5. **Deploy!**
 
 ### Manual Configuration
 
 If needed, ensure `vercel.json` is properly configured (already included).
+
+### Important Notes for Production
+
+- Make sure your Supabase project is active and not paused
+- Enable Row Level Security (RLS) policies in production
+- Consider implementing password hashing (bcrypt) before deployment
+- Set up proper CORS origins instead of allowing all (`*`)
 
 ## 🤝 Contributing
 

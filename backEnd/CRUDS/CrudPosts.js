@@ -1,80 +1,4 @@
-const { Sequelize, DataTypes, Op } = require('sequelize');
-const conexaoComBancoDeDados = new Sequelize({
-  dialect: 'sqlite',
-  storage: 'Database.sqlite',
-});
-
-const TabelaPosts = conexaoComBancoDeDados.define('Posts', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  siteName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  category: {
-    type: DataTypes.ENUM('Positiva', 'Negativa', 'Aviso'),
-    allowNull: false,
-  },
-  authorUsername: { // autor da publicação
-    type: DataTypes.STRING(26),
-    allowNull: false,
-  },
-  likes: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0,
-  },
-  dislikes: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0,
-  },
-  likedUsers: { // JSON array de usernames que deram like
-    type: DataTypes.TEXT,
-    defaultValue: '[]',
-    get() {
-      const raw = this.getDataValue('likedUsers');
-      return JSON.parse(raw || '[]');
-    },
-    set(val) {
-      this.setDataValue('likedUsers', JSON.stringify(val));
-    },
-  },
-  dislikedUsers: { // JSON array de usernames que deram dislike
-    type: DataTypes.TEXT,
-    defaultValue: '[]',
-    get() {
-      const raw = this.getDataValue('dislikedUsers');
-      return JSON.parse(raw || '[]');
-    },
-    set(val) {
-      this.setDataValue('dislikedUsers', JSON.stringify(val));
-    },
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.NOW,
-  },
-}, {
-  timestamps: false,
-  tableName: 'Posts',
-});
-
-async function sincronizarBancoDeDados() {
-  try {
-    await conexaoComBancoDeDados.sync();
-    console.log('Banco sincronizado.');
-  } catch (e) {
-    console.error('Erro ao sincronizar banco: ', e);
-  }
-}
-sincronizarBancoDeDados();
+const { supabase } = require('../config/supabase');
 
 async function criarPost(dados) {
   try {
@@ -83,10 +7,30 @@ async function criarPost(dados) {
       throw new Error('authorUsername precisa ser uma string simples');
     }
 
-    const novoPost = await TabelaPosts.create(dados);
-    return { dados: novoPost, mensagem: 'Post criado com sucesso!' };
+    const postData = {
+      site_name: dados.siteName,
+      description: dados.description,
+      category: dados.category,
+      author_username: dados.authorUsername,
+      likes: 0,
+      dislikes: 0,
+      liked_users: [],
+      disliked_users: []
+    };
+
+    const { data, error } = await supabase
+      .from('posts')
+      .insert([postData])
+      .select()
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return { dados: data, mensagem: 'Post criado com sucesso!' };
   } catch (err) {
-    console.error('Erro ao criar post:', err);
+    console.error('Erro ao criar post:', err.message);
     return { dados: err, mensagem: 'Erro ao criar post.' };
   }
 }
@@ -97,19 +41,34 @@ async function atualizarPost(id, dados, usuarioAtual) {
       throw new Error('authorUsername precisa ser uma string simples');
     }
 
-    const post = await TabelaPosts.findByPk(id);
+    // Busca o post primeiro para verificar autorização
+    const { data: post, error: fetchError } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (fetchError) throw fetchError;
     if (!post) throw new Error('Post não encontrado');
-    if (post.authorUsername !== usuarioAtual) throw new Error('Não autorizado');
+    if (post.author_username !== usuarioAtual) throw new Error('Não autorizado');
 
     // Atualiza apenas siteName, description, category
-    await post.update({
-      siteName: dados.siteName,
-      description: dados.description,
-      category: dados.category,
-    });
-    return { dados: post, mensagem: 'Post atualizado com sucesso!' };
+    const { data, error } = await supabase
+      .from('posts')
+      .update({
+        site_name: dados.siteName,
+        description: dados.description,
+        category: dados.category
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return { dados: data, mensagem: 'Post atualizado com sucesso!' };
   } catch (err) {
-    console.error('Erro ao atualizar post:', err);
+    console.error('Erro ao atualizar post:', err.message);
     return { dados: err, mensagem: 'Erro ao atualizar post.' };
   }
 }
@@ -120,15 +79,27 @@ async function excluirPost(id, usuarioAtual) {
       throw new Error('authorUsername precisa ser uma string simples');
     }
 
-    const post = await TabelaPosts.findByPk(id);
-    if (!post) throw new Error('Post não encontrado');
-    if (post.authorUsername !== usuarioAtual) throw new Error('Não autorizado');
+    // Busca o post primeiro para verificar autorização
+    const { data: post, error: fetchError } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('id', id)
+      .single();
 
-    await post.destroy();
+    if (fetchError) throw fetchError;
+    if (!post) throw new Error('Post não encontrado');
+    if (post.author_username !== usuarioAtual) throw new Error('Não autorizado');
+
+    const { error } = await supabase
+      .from('posts')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
 
     return { dados: null, mensagem: 'Post excluído com sucesso!' };
   } catch (err) {
-    console.error('Erro ao excluir post:', err);
+    console.error('Erro ao excluir post:', err.message);
     return { dados: err, mensagem: 'Erro ao excluir post.' };
   }
 }
@@ -139,64 +110,99 @@ async function votarPost(id, usuarioAtual, tipo) {
       throw new Error('authorUsername precisa ser uma string simples');
     }
 
-    const post = await TabelaPosts.findByPk(id);
+    // Busca o post
+    const { data: post, error: fetchError } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (fetchError) throw fetchError;
     if (!post) throw new Error('Post não encontrado');
 
-    let likedUsers = post.likedUsers;
-    let dislikedUsers = post.dislikedUsers;
+    let likedUsers = post.liked_users || [];
+    let dislikedUsers = post.disliked_users || [];
+    let likes = post.likes || 0;
+    let dislikes = post.dislikes || 0;
 
     const jaDeuLike = likedUsers.includes(usuarioAtual);
     const jaDeuDislike = dislikedUsers.includes(usuarioAtual);
 
     if (tipo === 'like') {
       if (jaDeuLike) {
+        // Remove like
         likedUsers = likedUsers.filter(u => u !== usuarioAtual);
-        post.likes--;
+        likes--;
       } else {
+        // Adiciona like
         likedUsers.push(usuarioAtual);
-        post.likes++;
+        likes++;
+        // Remove dislike se existir
         if (jaDeuDislike) {
           dislikedUsers = dislikedUsers.filter(u => u !== usuarioAtual);
-          post.dislikes--;
+          dislikes--;
         }
       }
     } else if (tipo === 'dislike') {
       if (jaDeuDislike) {
+        // Remove dislike
         dislikedUsers = dislikedUsers.filter(u => u !== usuarioAtual);
-        post.dislikes--;
+        dislikes--;
       } else {
+        // Adiciona dislike
         dislikedUsers.push(usuarioAtual);
-        post.dislikes++;
+        dislikes++;
+        // Remove like se existir
         if (jaDeuLike) {
           likedUsers = likedUsers.filter(u => u !== usuarioAtual);
-          post.likes--;
+          likes--;
         }
       }
     } else {
       throw new Error('Tipo inválido');
     }
 
-    post.likedUsers = likedUsers;
-    post.dislikedUsers = dislikedUsers;
+    // Atualiza o post
+    const { data, error } = await supabase
+      .from('posts')
+      .update({
+        liked_users: likedUsers,
+        disliked_users: dislikedUsers,
+        likes: likes,
+        dislikes: dislikes
+      })
+      .eq('id', id)
+      .select()
+      .single();
 
-    await post.save();
+    if (error) throw error;
 
-    return { dados: post, mensagem: 'Voto registrado com sucesso!' };
+    return { dados: data, mensagem: 'Voto registrado com sucesso!' };
   } catch (err) {
-    console.error('Erro ao votar post:', err);
+    console.error('Erro ao votar post:', err.message);
     return { dados: err, mensagem: 'Erro ao votar post.' };
   }
 }
 
 async function listarPosts(filtroSite = '') {
   try {
-    const where = filtroSite
-      ? { siteName: { [Op.like]: `%${filtroSite}%` } }
-      : {};
-    const posts = await TabelaPosts.findAll({ where, order: [['createdAt', 'DESC']] });
-    return { dados: posts, mensagem: 'Posts listados com sucesso!' };
+    let query = supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    // Aplica filtro se fornecido
+    if (filtroSite) {
+      query = query.ilike('site_name', `%${filtroSite}%`);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+
+    return { dados: data, mensagem: 'Posts listados com sucesso!' };
   } catch (err) {
-    console.error('Erro ao listar posts:', err);
+    console.error('Erro ao listar posts:', err.message);
     return { dados: err, mensagem: 'Erro ao listar posts.' };
   }
 }
@@ -206,5 +212,5 @@ module.exports = {
   listarPosts,
   atualizarPost,
   excluirPost,
-  votarPost,
+  votarPost
 };
