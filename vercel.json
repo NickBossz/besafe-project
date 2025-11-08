@@ -13,46 +13,46 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/check-site",
-      "dest": "backend/servidor.js"
+      "source": "/check-site",
+      "destination": "/backend/servidor.js"
     },
     {
-      "src": "/check-file",
-      "dest": "backend/servidor.js"
+      "source": "/check-file",
+      "destination": "/backend/servidor.js"
     },
     {
-      "src": "/criarUsuario",
-      "dest": "backend/servidor.js"
+      "source": "/criarUsuario",
+      "destination": "/backend/servidor.js"
     },
     {
-      "src": "/usuario/(.*)",
-      "dest": "backend/servidor.js"
+      "source": "/usuario/:username",
+      "destination": "/backend/servidor.js"
     },
     {
-      "src": "/usuarios",
-      "dest": "backend/servidor.js"
+      "source": "/usuarios",
+      "destination": "/backend/servidor.js"
     },
     {
-      "src": "/excluirUsuario/(.*)",
-      "dest": "backend/servidor.js"
+      "source": "/excluirUsuario/:username",
+      "destination": "/backend/servidor.js"
     },
     {
-      "src": "/uploadperfilimage",
-      "dest": "backend/servidor.js"
+      "source": "/uploadperfilimage",
+      "destination": "/backend/servidor.js"
     },
     {
-      "src": "/posts(.*)",
-      "dest": "backend/servidor.js"
+      "source": "/posts/:path*",
+      "destination": "/backend/servidor.js"
     },
     {
-      "src": "/forum/(.*)",
-      "dest": "backend/servidor.js"
+      "source": "/posts",
+      "destination": "/backend/servidor.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "frontend/$1"
+      "source": "/forum/:path*",
+      "destination": "/backend/servidor.js"
     }
   ]
 }
